@@ -6,14 +6,18 @@
 
     padding: 10px 10px;
     margin: 10px auto;
-    border-bottom: solid 1px #7b7b7b;
 }
+
+.message:hover {
+    background-color: #f9f9f9;
+}
+
 .message .avater{
     height: 100%;
     min-height: 48px;
     min-width: 48px; 
     max-width: 48px; 
-    background-color: aquamarine;
+    background-color:#ffffff;
 }
 
 .message .container{
@@ -50,10 +54,11 @@
     background-color: #3c2f3c;
 }
 
+.side_bar .container a {
+    text-decoration: none;
+}
+
 .side_bar .container a:link { color: #c9c4c9; }
 .side_bar .container a:visited { color: #c9c4c9; }
 .side_bar .container a:hover { color: #c9c4c9; }
 .side_bar .container a:active { color: #9a9a9a; }
-.side_bar .container a {
-    text-decoration: none;
-}
