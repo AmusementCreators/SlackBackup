@@ -1,0 +1,17 @@
+.message{
+    display: flex;
+    flex-direction: row;
+}
+.message .avater{
+    height: 100%;
+    min-height: 48px;
+    min-width: 48px; 
+    max-width: 48px; 
+    background-color: aquamarine;
+}
+
+.message .container{
+    display: flex;
+    flex-direction: column;
+}
+
