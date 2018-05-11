@@ -73,7 +73,7 @@ namespace SlackBackup
 							text = r.Replace(text, $"{u.Value.RealName ?? u.Value.Name}(@{u.Value.Name})");
                         }
                         
-						if(text.Contains("uploaded a file"))
+						if(text.Contains("a file"))
 						{
 							var r = new Regex(@"<https:\/\/amusementcreators.slack.com\/files\/(?<url1>.+)\/(?<url2>.+)\/(?<url3>.+)\|(?<filename>.+)>");
 							var match = r.Match(text);
