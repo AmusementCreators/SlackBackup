@@ -52,6 +52,19 @@ namespace SlackBackup
     
 
 ");
+					writer.WriteLine(@"<div class='side_bar'>");
+					foreach(var c in channels)
+					{
+
+						var text = $"<a href =\"{c.Value.Name}.html\">#{c.Value.Name}</a>\n";
+						writer.WriteLine($@"
+    <span class='container'>
+        {text}
+    </span>
+");
+					}
+					writer.WriteLine("</div>");
+					
                     foreach (var m in messages)
                     {
                         var user = (m.User != null && users.ContainsKey(m.User)) ? users[m.User] : null;

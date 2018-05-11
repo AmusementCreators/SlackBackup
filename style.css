@@ -1,6 +1,12 @@
 .message{
     display: flex;
     flex-direction: row;
+
+    width: 60%;
+
+    padding: 10px 10px;
+    margin: 10px auto;
+    border-bottom: solid 1px #7b7b7b;
 }
 .message .avater{
     height: 100%;
@@ -13,5 +19,36 @@
 .message .container{
     display: flex;
     flex-direction: column;
+    margin: 0 2em;
+    font-family: Hiragino Kaku Gothic Pro;
 }
 
+.message .container .header {
+    font-weight: bold;
+}
+
+.side_bar {
+    position: fixed; /* スクロールしても位置を固定 */
+    padding: 100px 20px;
+    width: 15%;
+    float: left;
+    background-color: #4a3a4a;
+}
+
+.side_bar .container {
+    display: flex;
+    flex-direction: column;
+    padding: 2px 5px;
+    font-family: Hiragino Kaku Gothic Pro;
+}
+.side_bar .container:hover {
+    background-color: #3c2f3c;
+}
+
+.side_bar .container a:link { color: #c9c4c9; }
+.side_bar .container a:visited { color: #c9c4c9; }
+.side_bar .container a:hover { color: #c9c4c9; }
+.side_bar .container a:active { color: #9a9a9a; }
+.side_bar .container a {
+    text-decoration: none;
+}
