@@ -21,28 +21,6 @@ namespace SlackBackup
             str = System.IO.File.ReadAllText(Path.Combine(args[0], @"channels.json"));
             var channels = JsonConvert.DeserializeObject<Channel[]>(str).ToDictionary(u => u.Id);
 
-			/*
-            中身の形式は以下 
-			CA3GL3EM7, accounting
-            C04JEB1SH, altseed
-            C1P9F83SM, archade
-            */
-            
-#if false
-			foreach(var c in channels)
-			{
-				Console.WriteLine($"{c.Key}, {c.Value.Name}");
-			}
-			foreach (var u in users)
-            {
-                Console.WriteLine($"{u.Key}, {u.Value.Name}");
-            }
-
-			return;
-#endif
-
-			// var regex = new Regex(@"<@(?<uid>[0-9A-Z]*?)|#(?<cid>[0-9A-Z]*?)\|?.*>");
-
             // チャンネルごとに、メッセージデータを読み込む
             foreach (var chName in channels.Select(ch => ch.Value.Name))
             {
@@ -78,18 +56,21 @@ namespace SlackBackup
                     {
                         var user = (m.User != null && users.ContainsKey(m.User)) ? users[m.User] : null;
                         var uname = user?.Name ?? "unknown";
+						var unamereal = user?.RealName ?? uname;
                         var date = DateTimeOffset.FromUnixTimeSeconds((long)double.Parse(m.Ts)).ToLocalTime().ToString();
                         var text = m.Text??"";
-						// var r = regex.Matches(text);
+
+                        // replace channel id to channel name
 						foreach(var c in channels)
 						{
 							var r = new Regex($@"<#{c.Key}\|?.*>");
 							text = r.Replace(text, $"<a href=\"{c.Value.Name}.html\">#{c.Value.Name}</a>");
 						}
+						// replace user id to user name
 						foreach (var u in users)
                         {
                             var r = new Regex($@"<@{u.Key}>");
-							text = r.Replace(text, $"@{u.Value.Name}({u.Value.RealName})");
+							text = r.Replace(text, $"{u.Value.RealName ?? u.Value.Name}(@{u.Value.Name})");
                         }
 
                         writer.WriteLine($@"
@@ -100,7 +81,7 @@ namespace SlackBackup
     <span class='container'>
         <span class='header'>
             <span class='name'>
-                {uname}
+                {unamereal} (@{uname})
             </span>
             <span class='date'>
                 {date}
