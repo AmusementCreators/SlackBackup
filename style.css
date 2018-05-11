@@ -41,6 +41,11 @@
     padding: 2px 5px;
     font-family: Hiragino Kaku Gothic Pro;
 }
+
+.side_bar .container#current {
+    background-color: #5e9489;
+}
+
 .side_bar .container:hover {
     background-color: #3c2f3c;
 }

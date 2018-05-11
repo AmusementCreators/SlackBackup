@@ -55,13 +55,24 @@ namespace SlackBackup
 					writer.WriteLine(@"<div class='side_bar'>");
 					foreach(var c in channels)
 					{
-
 						var text = $"<a href =\"{c.Value.Name}.html\">#{c.Value.Name}</a>\n";
-						writer.WriteLine($@"
+
+						if (chName == c.Value.Name)
+						{
+							writer.WriteLine($@"
+    <span class='container' id='current'>
+        {text}
+    </span>
+");
+						}
+						else
+						{
+							writer.WriteLine($@"
     <span class='container'>
         {text}
     </span>
 ");
+						}
 					}
 					writer.WriteLine("</div>");
 					
