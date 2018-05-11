@@ -72,6 +72,13 @@ namespace SlackBackup
                             var r = new Regex($@"<@{u.Key}>");
 							text = r.Replace(text, $"{u.Value.RealName ?? u.Value.Name}(@{u.Value.Name})");
                         }
+                        
+						if(text.Contains("uploaded a file"))
+						{
+							var r = new Regex(@"<https:\/\/amusementcreators.slack.com\/files\/(?<url1>.+)\/(?<url2>.+)\/(?<url3>.+)\|(?<filename>.+)>");
+							var match = r.Match(text);
+							text = r.Replace(text, $"<a href=\"https://amusementcreators.slack.com/files/{match.Groups["url"]}/{match.Groups["ur2"]}/{match.Groups["ur3"]}\">{match.Groups["filename"]}</a>");
+						}
 
                         writer.WriteLine($@"
 <div class='message'>
