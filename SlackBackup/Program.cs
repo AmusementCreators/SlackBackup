@@ -66,6 +66,7 @@ namespace SlackBackup
 							var r = new Regex($@"<#{c.Key}\|?.*>");
 							text = r.Replace(text, $"<a href=\"{c.Value.Name}.html\">#{c.Value.Name}</a>");
 						}
+
 						// replace user id to user name
 						foreach (var u in users)
                         {
@@ -73,14 +74,7 @@ namespace SlackBackup
 							text = r.Replace(text, $"{u.Value.RealName ?? u.Value.Name}(@{u.Value.Name})");
                         }
 
-						if (text.Contains(@"<https:\/\/amusementcreators.slack.com\/files\/"))
-						{
-							var r = new Regex(@"<https:\/\/amusementcreators.slack.com\/files\/(?<url>.+)\|(?<filename>.+)>");
-							var match = r.Match(text);
-							var url = Regex.Replace($"{match.Groups["url"]}" ?? "", @"\/", @"/");
-							text = r.Replace(text, $"<a href=\"https://amusementcreators.slack.com/files/{url}\">{match.Groups["filename"]}</a>");
-						}
-
+                        // replace file url
 						if (text.Contains(@"<https:\/\/amusementcreators.slack.com\/files\/"))
                         {
                             var r = new Regex(@"<https:\/\/amusementcreators.slack.com\/files\/(?<url>.+)\|(?<filename>.+)>");
@@ -89,6 +83,7 @@ namespace SlackBackup
                             text = r.Replace(text, $"<a href=\"https://amusementcreators.slack.com/files/{url}\">{match.Groups["filename"]}</a>");
                         }
 
+                        // replace url
 						if (text.Contains(@"http"))
                         {
                             var r = new Regex(@"<http(?<url>.+)>");
