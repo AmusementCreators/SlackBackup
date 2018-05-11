@@ -13,21 +13,24 @@ namespace SlackBackup
     {
         static void Main(string[] args)
         {
+            // ユーザデータの読み込み
             var str = System.IO.File.ReadAllText(Path.Combine(args[0], @"users.json"));
             var users = JsonConvert.DeserializeObject<User[]>(str).ToDictionary(u => u.Id);
 
+            // チャンネルデータの読み込み
             str = System.IO.File.ReadAllText(Path.Combine(args[0], @"channels.json"));
             var channels = JsonConvert.DeserializeObject<Channel[]>(str).ToDictionary(u => u.Id);
 
             //var regex = new Regex(@"<((?<uid>@.*?)|(?<cid>#.*?)\|.*?)>");
 
-
+            // チャンネルごとに、メッセージデータを読み込む
             foreach (var chName in channels.Select(ch => ch.Value.Name))
             {
                 var path = Path.Combine(args[0], chName);
                 var files = Directory.EnumerateFiles(path);
                 var messages = new List<Message>();
 
+                // メッセージは日付ごとに別々のファイルになっているので全部読み込む
                 foreach (var f in files)
                 {
                     str = System.IO.File.ReadAllText(f);
@@ -36,6 +39,7 @@ namespace SlackBackup
                     messages.AddRange(m);
                 }
 
+                // チャンネルごとにHTMLファイルに書き出し
                 using (var writer = new StreamWriter(Path.Combine(args[1], chName + ".html")))
                 {
                     writer.WriteLine($@"
@@ -50,7 +54,6 @@ namespace SlackBackup
     
 
 ");
-                    User currentUser = null;
                     foreach (var m in messages)
                     {
                         var user = (m.User != null && users.ContainsKey(m.User)) ? users[m.User] : null;
