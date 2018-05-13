@@ -8,6 +8,18 @@
     margin: 10px auto;
 }
 
+.message .bold{
+    font-weight: bold;
+}
+
+.message .oblique{
+    font-style: oblique;
+}
+
+.message .line{
+    text-decoration: line-through;
+}
+
 .message:hover {
     background-color: #f9f9f9;
 }
