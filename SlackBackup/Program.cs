@@ -67,6 +67,7 @@ namespace SlackBackup
                         WriteHeader(writer, chName);
                         WriteSidebar(writer, channels, chName);
 
+						writer.WriteLine("<div class='content'>");
                         foreach (var m in messages)
                         {
                             var user = (m.User != null && users.ContainsKey(m.User)) ? users[m.User] : null;
@@ -112,6 +113,8 @@ namespace SlackBackup
 
                             WriteMessage(writer, user, uname, unamereal, date, text);
                         }
+						writer.WriteLine("</div>");
+                        
                         WriteFooter(writer);
                     }
                 });
@@ -129,7 +132,7 @@ namespace SlackBackup
 <html>
 <head>
     <meta charset='utf-8' />
-    <title>{chName}</title>
+    <title>{chName} | AmusementCreators SlackBackup</title>
     <link rel='stylesheet' type='text/css' href='style.css' />
 </head>
 <body>    
@@ -142,7 +145,9 @@ namespace SlackBackup
         /// </summary>
         private static void WriteSidebar(StreamWriter writer, Dictionary<string, Channel> channels, string chName)
         {
-            writer.WriteLine(@"<div class='side_bar'>");
+            writer.WriteLine("<div class='side_bar'>\r\n");
+			writer.WriteLine(@"
+    <span class='name'>channel</span>");
             foreach (var c in channels)
             {
                 var text = $"<a href =\"{c.Value.Name}.html\">#{c.Value.Name}</a>\n";
@@ -164,7 +169,7 @@ namespace SlackBackup
 ");
                 }
             }
-            writer.WriteLine("</div>");
+            writer.WriteLine("</div>\r\n");
         }
 
         /// <summary>

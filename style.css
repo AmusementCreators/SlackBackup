@@ -1,11 +1,18 @@
+body {
+    font-family: Hiragino Kaku Gothic Pro;
+}
+
+.content {
+    width: 100%;
+    overflow-x: hidden;
+}
+
 .message{
     display: flex;
     flex-direction: row;
-
     width: 60%;
-
     padding: 10px 10px;
-    margin: 10px auto;
+    margin: 10px 20%;
 }
 
 .message .bold{
@@ -28,15 +35,15 @@
     height: 100%;
     min-height: 48px;
     min-width: 48px; 
-    max-width: 48px; 
+    max-width: 48px;
+    margin: 0 10px;
     background-color:#ffffff;
 }
 
 .message .container{
     display: flex;
     flex-direction: column;
-    margin: 0 2em;
-    font-family: Hiragino Kaku Gothic Pro;
+    word-break: break-all;
 }
 
 .message .container .header {
@@ -45,22 +52,32 @@
 
 .side_bar {
     position: fixed; /* スクロールしても位置を固定 */
-    padding: 100px 20px;
-    width: 15%;
+    padding: 100px 0;
+    width: 20%;
+    height: auto;
     float: left;
     background-color: #4a3a4a;
+}
+
+.side_bar .name {
+    display: flex;
+    flex-direction: column;
+    padding: 2% 10%;
+    color: #c9c4c9;
+    
 }
 
 .side_bar .container {
     display: flex;
     flex-direction: column;
-    padding: 2px 5px;
-    font-family: Hiragino Kaku Gothic Pro;
+    padding: 2px 10%;
 }
 
 .side_bar .container#current {
     background-color: #5e9489;
 }
+
+.side_bar .container#current a { color: #ffffff; }
 
 .side_bar .container:hover {
     background-color: #3c2f3c;
@@ -70,7 +87,4 @@
     text-decoration: none;
 }
 
-.side_bar .container a:link { color: #c9c4c9; }
-.side_bar .container a:visited { color: #c9c4c9; }
-.side_bar .container a:hover { color: #c9c4c9; }
-.side_bar .container a:active { color: #9a9a9a; }
+.side_bar .container a { color: #c9c4c9; }
