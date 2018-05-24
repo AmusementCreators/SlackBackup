@@ -72,7 +72,9 @@ namespace SlackBackup
                         {
                             var user = (m.User != null && users.ContainsKey(m.User)) ? users[m.User] : null;
                             var uname = user?.Name ?? "unknown";
-                            var unamereal = user?.RealName ?? uname;
+						    var unamereal = user?.RealName ?? "";
+						    unamereal = (uname != unamereal) ? $"({unamereal})" : "";
+                            
                             var date = DateTimeOffset.FromUnixTimeSeconds((long)double.Parse(m.Ts)).ToLocalTime().ToString();
                             var text = m.Text ?? "";
 
@@ -80,30 +82,34 @@ namespace SlackBackup
                             foreach (var c in channels)
                             {
                                 var r = new Regex($@"<#{c.Key}\|?.*>");
-                                text = r.Replace(text, $"<a href=\"{c.Value.Name}.html\">#{c.Value.Name}</a>");
+                                text = r.Replace(text, $"<a href=\"{c.Value.Name}.html\", id='channel'>#{c.Value.Name}</a>");
                             }
 
                             // replace user id to user name
                             foreach (var u in users)
                             {
-                                var r = new Regex($@"<@{u.Key}>");
-                                text = r.Replace(text, $"@{u.Value.Name}({u.Value.RealName ?? u.Value.Name})");
+							    var realName = u.Value?.RealName ?? "";
+							    realName = (u.Value.Name != realName) ? $"({realName})" : "";
+							    text = text.Replace($@"<@{u.Key}>", $"<span class='mention'>@{u.Value.Name}{realName}</span>");
                             }
+
+							// replace @channel
+						    text = text.Replace(@"<!channel>", @"<span class='at_channel'>@channel</span>");
 
                             // replace file url
                             if (text.Contains(@"<https:\/\/amusementcreators.slack.com\/files\/"))
                             {
                                 var match = regexAttachment.Match(text);
                                 var url = Regex.Replace($"{match.Groups["url"]}" ?? "", @"\/", @"/");
-                                text = regexAttachment.Replace(text, $"<a href=\"https://amusementcreators.slack.com/files/{url}\">{match.Groups["filename"]}</a>");
+							text = regexAttachment.Replace(text, $"<a href=\"https://amusementcreators.slack.com/files/{url}\" target=\"_blank\">{match.Groups["filename"]}</a>");
                             }
 
                             // replace url
                             if (text.Contains(@"http"))
                             {
                                 var match = regexURL.Match(text);
-                                var url = Regex.Replace($"{match.Groups["url"]}" ?? "", @"\/", @"/");
-                                text = regexURL.Replace(text, $"<a href=\"http{url}\">http{url}</a>");
+							    var url = ($"{match.Groups["url"]}" ?? "").Replace(@"\/", @"/");
+							text = regexURL.Replace(text, $"<a href=\"http{url}\" target=\"_blank\">http{url}</a>");
                             }
 
                             // 文字修飾を反映
@@ -191,7 +197,7 @@ namespace SlackBackup
     <span class='container'>
         <span class='header'>
             <span class='name'>
-                @{uname} ({unamereal})
+                @{uname} {unamereal}
             </span>
             <span class='date'>
                 {date}
